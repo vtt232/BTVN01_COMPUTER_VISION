@@ -278,20 +278,24 @@ int main(int argc, char** argv)
 			detectByPrewitt(imageBlur, detectedEdgeImage);
 			imshow("Source image", image);
 			imshow("Detected by Prewitt image", detectedEdgeImage);
+			//imwrite("C:/CV_BTVN1/pic1PrewittCus.jpg", detectedEdgeImage*255);
 			waitKey(0);
 			return 0;
 		}
 		else if (argc == 5 && std::string(argv[2]) == "detecByCanny") ////////////// xac dinh bien canh bang Canny//////////
 		{
 			Mat imageGray, imageBlur;
-			Mat detectedEdgeImage;
+			Mat detectedCusImage;
+			Mat detectedLibImage;
 			float lowThresholdRatio = atof(argv[3]);
 			float highThresholdRatio = atof(argv[4]);
 			cvtColor(image, imageGray, COLOR_BGR2GRAY); ////////Grayscale anh
 			GaussianBlur(imageGray, imageBlur, Size(3, 3), 0);/////////Lam mo anh
-			detecByCanny(imageBlur, detectedEdgeImage, lowThresholdRatio, highThresholdRatio);
+			Canny(imageBlur, detectedLibImage, 40, 120);
+			detecByCanny(imageBlur, detectedCusImage, lowThresholdRatio, highThresholdRatio);
 			imshow("Source image", image);
-			imshow("Detected by Canny image", detectedEdgeImage);
+			imshow("Detected by Canny custom image", detectedCusImage);
+			imshow("Detected by Canny Library image", detectedLibImage);
 			waitKey(0);
 			return 0;
 		}
