@@ -191,6 +191,7 @@ Mat doubleThreshold(Mat img, float lowThresholdRatio, float highThresholdRatio)
 /////// Nguoc lai se duoc xem la weak pixel.
 bool checkNeighbor(Mat type, int i, int j)
 {
+
 	if (type.at<float>(i + 1, j - 1) == 1 || type.at<float>(i + 1, j) == 1 || type.at<float>(i + 1, j + 1) == 1 || type.at<float>(i, j - 1) == 1
 		|| type.at<float>(i, j + 1) == 1 || type.at<float>(i - 1, j - 1) == 1 || type.at<float>(i - 1, j) == 1 || type.at<float>(i - 1, j + 1) == 1)
 	{
@@ -208,9 +209,9 @@ bool checkNeighbor(Mat type, int i, int j)
 Mat hysteresis(Mat type)
 {
 	Mat outputHysteresis = type.clone();
-	for (int i = 0; i < type.rows; i++)
+	for (int i = 1; i < type.rows-1; i++)
 	{
-		for (int j = 0; j < type.cols; j++)
+		for (int j = 1; j < type.cols-1; j++)
 		{
 			if (type.at<float>(i, j) == -1)
 				outputHysteresis.at<float>(i, j) = WEAK;
@@ -246,7 +247,7 @@ int detecByCanny(Mat src, Mat& dst, float lowThresholdRatio, float highThreshold
 	gSobel = gSobel / max * 255; 
 	////////////////////////////////////
 	phase(Gx,Gy,theta); ////////////// Tinh theta = arctan(Gy/Gx)
-	gNonMaxSup =nonMaxSuppression(gSobel,theta); 
+	gNonMaxSup =nonMaxSuppression(gSobel,theta);
 	gThreshold = doubleThreshold(gNonMaxSup, lowThresholdRatio, highThresholdRatio);
 	dst = hysteresis(gThreshold);
 	return 1;
